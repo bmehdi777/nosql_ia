@@ -44,6 +44,9 @@ function App() {
             <td>Nom</td>
             <td>Description</td>
             <td>Détail</td>
+            <td>
+              <button></button>
+            </td>
           </tr>
         </thead>
         <tbody>
