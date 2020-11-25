@@ -114,6 +114,13 @@ function App() {
       >
         Créer
       </button>
+      <button
+        onClick={() => {
+          history.push("/reconnaissance/");
+        }}
+      >
+        Reconnaissance d'image
+      </button>
     </>
   ) : (
     <>Chargement...</>

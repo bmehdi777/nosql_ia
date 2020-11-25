@@ -4,6 +4,7 @@ import App from "./App";
 import Detail from "./Detail";
 import ModifyDetail from "./ModifyDetail";
 import Create from "./Create";
+import Reconaissance from "./Reconnaissance";
 
 function Routes() {
   return (
@@ -18,6 +19,12 @@ function Routes() {
           component={ModifyDetail}
         />
         <Route exact sensitive path="/create/" component={Create} />
+        <Route
+          exact
+          sensitive
+          path="/reconnaissance/"
+          component={Reconaissance}
+        />
       </Switch>
     </Router>
   );
