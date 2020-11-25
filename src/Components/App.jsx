@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import axios from "axios";
 import parse from "html-react-parser";
 import Pagination from "react-js-pagination";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 //a remplacer si on met sur heroku
-const uri = "http://localhost:8000";
+const uri = "http://localhost:8080";
 function App() {
+  const history = useHistory();
   const [page, setPage] = useState(1);
   const [lieux, setLieux] = useState([]);
   const [actualLieux, setActualLieux] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ordre, setOrdre] = useState(true);
 
   useEffect(() => {
-    Axios.get(uri + "/lieux").then((response) => {
+    axios.get(uri + "/").then((response) => {
       setLieux(response.data);
       setLoading(false);
     });
@@ -30,9 +32,30 @@ function App() {
     }
   }, [page]);
 
+  useEffect(() => {
+    if (lieux !== []) {
+      let l;
+      if (ordre) {
+        l = lieux.sort(function (a, b) {
+          return new Date(a.host_since) - new Date(b.host_since);
+        });
+      } else {
+        l = lieux.sort(function (a, b) {
+          return new Date(b.host_since) - new Date(a.host_since);
+        });
+      }
+      console.log(l);
+      setActualLieux(l.slice((1 - 1) * 10, 1 * 10));
+      setPage(1);
+    }
+  }, [ordre]);
+
   function handleChangePage(p) {
     setPage(p);
-    console.log(p);
+  }
+
+  function sortArray() {
+    setOrdre(!ordre);
   }
 
   return !loading ? (
@@ -43,9 +66,10 @@ function App() {
             <td>Id</td>
             <td>Nom</td>
             <td>Description</td>
+            <td>Date</td>
             <td>Détail</td>
             <td>
-              <button></button>
+              <button onClick={sortArray}>Trier par date</button>
             </td>
           </tr>
         </thead>
@@ -56,8 +80,9 @@ function App() {
                 <td>{elem.id}</td>
                 <td>{elem.name}</td>
                 <td>{parse(elem.description)}</td>
+                <td>{elem.host_since}</td>
                 <td>
-                  <Link to={`/lieu/${elem.id}`}>Voir plus</Link>
+                  <Link to={`/lieu/${elem._id}`}>Voir plus</Link>
                 </td>
               </tr>
             );
@@ -80,6 +105,15 @@ function App() {
           </div>
         </div>
       )}
+
+      <br />
+      <button
+        onClick={() => {
+          history.push("/create/");
+        }}
+      >
+        Créer
+      </button>
     </>
   ) : (
     <>Chargement...</>
