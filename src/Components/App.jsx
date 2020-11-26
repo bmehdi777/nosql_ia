@@ -6,12 +6,16 @@ import '../styles/App.css'
 const App = () => {
   return (
     <div className='app'>
-      <div className='app__airbnb'>
-        <Link to={'/airbnb'}>AirBnb</Link>
-      </div>
-      <div className='app__reconnaissance'>
-        <Link to={'/reconnaissance'}>Reconnaissance d'image</Link>
-      </div>
+      <Link to={'/airbnb'}>
+        <div className='app__airbnb'>
+          AirBnb
+        </div>
+      </Link>
+      <Link to={'/reconnaissance'}>
+        <div className='app__reconnaissance'>
+        Reconnaissance d'image
+        </div>
+      </Link>
     </div>
   )
 }

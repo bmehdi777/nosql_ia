@@ -58,10 +58,6 @@ function Historique() {
     setPage(p);
   }
 
-  function sortArray() {
-    setOrdre(!ordre);
-  }
-
   function remove(id) {
     axios.delete(uri + "/predictions/" + id).then(() => {
       window.location.href = "/historique";
@@ -111,3 +107,4 @@ function Historique() {
 }
 
 export default Historique;
+ 
