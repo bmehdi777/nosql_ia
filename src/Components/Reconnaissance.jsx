@@ -66,10 +66,7 @@ function ModifyDetail() {
       .post(uri + "/image", {
         predict: predict,
       })
-      .then(() => {
-        //resfresh historique
-      })
-      .catch((err) => console.log(err));
+  
     setPrediction(predict.analyse.type);
     setTaux(predict.analyse.taux);
   }

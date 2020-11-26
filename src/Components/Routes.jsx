@@ -8,6 +8,7 @@ import ModifyDetail from "./ModifyDetail";
 import Create from "./Create";
 import Reconaissance from "./Reconnaissance";
 import Historique from "./Historique";
+import WebcamDetection from "./WebcamDetection";
 
 function Routes() {
   return (
@@ -34,6 +35,12 @@ function Routes() {
           sensitive
           path="/reconnaissance"
           component={Reconaissance}
+        />
+        <Route
+          exact
+          sensitive
+          path="/webcamDetection"
+          component={WebcamDetection}
         />
       </Switch>
     </Router>
