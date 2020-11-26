@@ -4,6 +4,7 @@ import axios from "axios";
 import parse from "html-react-parser";
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
+import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import DragAnDropFile from "./DragAnDropFile/DragAnDropFile";
 
 import "./Reconnaissance.css";
@@ -14,12 +15,15 @@ function ModifyDetail() {
   const history = useHistory();
 
   const [model, setModel] = useState();
+  const [modelCoco, setModelCoco] = useState();
+
   const [prediction, setPrediction] = useState("");
   const [taux, setTaux] = useState("");
 
   useEffect(() => {
     async function loadModel() {
       setModel(await mobilenet.load());
+      setModelCoco(await cocoSsd.load());
     }
     loadModel();
   }, []);
@@ -34,8 +38,12 @@ function ModifyDetail() {
     const predictions = await model.classify(
       document.getElementById("img_predict")
     );
+    let pred;
+    let predict;
+
     let imgToB64 = convertB64(document.getElementById("img_predict"));
-    const predict = {
+
+    predict = {
       nom: document.getElementById("img_predict").title,
       analyse: {
         taux: predictions[0].probability * 100,
@@ -45,8 +53,13 @@ function ModifyDetail() {
       date: getToday(),
       size: imgToB64.length * (3 / 4) - 2,
     };
+    if (predictions[0].probability * 100 <= 30) {
+      pred = await modelCoco.detect(document.getElementById("img_predict"));
+      predict.analyse = { taux: pred[0].score * 100, type: pred[0].class };
+    }
+    console.log(predict);
 
-    axios
+    /*axios
       .post(uri + "/image", {
         predict: predict,
       })
@@ -54,7 +67,7 @@ function ModifyDetail() {
         //resfresh historique
       })
       .catch((err) => console.log(err));
-
+*/
     setPrediction(predict.analyse.type);
     setTaux(predict.analyse.taux);
   }
