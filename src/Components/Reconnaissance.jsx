@@ -23,7 +23,7 @@ function ModifyDetail() {
   const handleFile = async (file) => {
     const img = document.getElementById("img_predict");
     img.src = URL.createObjectURL(file);
-    //img.title = file.name;
+    img.title = file.name;
   };
 
   async function reconn() {
@@ -51,7 +51,7 @@ function ModifyDetail() {
       })
       .catch((err) => console.log(err));
 
-    setPrediction(predict.nom);
+    setPrediction(predict.analyse.type);
   }
 
   function convertB64(img) {

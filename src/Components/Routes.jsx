@@ -5,6 +5,7 @@ import Detail from "./Detail";
 import ModifyDetail from "./ModifyDetail";
 import Create from "./Create";
 import Reconaissance from "./Reconnaissance";
+import AppReconnaissance from "./AppReconnaissance";
 
 function Routes() {
   return (
@@ -23,6 +24,12 @@ function Routes() {
           exact
           sensitive
           path="/reconnaissance/"
+          component={AppReconnaissance}
+        />
+        <Route
+          exact
+          sensitive
+          path="/reconnaissance/img"
           component={Reconaissance}
         />
       </Switch>
