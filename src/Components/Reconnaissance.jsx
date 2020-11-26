@@ -74,10 +74,17 @@ function ModifyDetail() {
 
   function convertB64(img) {
     let canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    let ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, 100, 100);
+    var ctx = canvas.getContext("2d");
+    var iw = img.width;
+    var ih = img.height;
+    var scale = Math.min(100 / iw, 100 / ih);
+    var iwScaled = iw * scale;
+    var ihScaled = ih * scale;
+    canvas.width = iwScaled;
+    canvas.height = ihScaled;
+
+    ctx.drawImage(img, 0, 0, iwScaled, ihScaled);
+
     let dataURL = canvas.toDataURL("image/png");
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
@@ -97,7 +104,12 @@ function ModifyDetail() {
         {prediction ? prediction + " / taux : " + taux : ""}
       </p>
       <DragAnDropFile onChange={handleFile} />
-      <img id="img_predict" style={{ display: "none" }} />
+      <img
+        id="img_predict"
+        style={{ display: "none" }}
+        width="100"
+        height="100"
+      />
       <button className="reconnaissance__btn" onClick={reconn}>
         Reconnaissance
       </button>
