@@ -8,45 +8,44 @@ const uri = "http://localhost:8080";
 function App() {
   const history = useHistory();
   const [page, setPage] = useState(1);
-  const [img, setImg] = useState([]);
-  const [actualImg, setActualImg] = useState([]);
+  const [lieux, setLieux] = useState([]);
+  const [actualLieux, setActualLieux] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ordre, setOrdre] = useState(true);
 
   useEffect(() => {
-    axios.get(uri + "/predictions").then((response) => {
-      setImg(response.data);
-      console.log(response.data);
+    axios.get(uri + "/").then((response) => {
+      setLieux(response.data);
       setLoading(false);
     });
   }, []);
 
   useEffect(() => {
-    if (img !== []) {
-      setActualImg(img.slice((page - 1) * 10, page * 10));
+    if (lieux !== []) {
+      setActualLieux(lieux.slice((page - 1) * 10, page * 10));
     }
-  }, [img]);
+  }, [lieux]);
 
   useEffect(() => {
-    if (img !== []) {
-      setActualImg(img.slice((page - 1) * 10, page * 10));
+    if (lieux !== []) {
+      setActualLieux(lieux.slice((page - 1) * 10, page * 10));
     }
   }, [page]);
 
   useEffect(() => {
-    if (img !== []) {
+    if (lieux !== []) {
       let l;
       if (ordre) {
-        l = img.sort(function (a, b) {
-          return new Date(a.date) - new Date(b.date);
+        l = lieux.sort(function (a, b) {
+          return new Date(a.host_since) - new Date(b.host_since);
         });
       } else {
-        l = img.sort(function (a, b) {
-          return new Date(b.date) - new Date(a.date);
+        l = lieux.sort(function (a, b) {
+          return new Date(b.host_since) - new Date(a.host_since);
         });
       }
       console.log(l);
-      setActualImg(l.slice((1 - 1) * 10, 1 * 10));
+      setActualLieux(l.slice((1 - 1) * 10, 1 * 10));
       setPage(1);
     }
   }, [ordre]);
@@ -59,44 +58,31 @@ function App() {
     setOrdre(!ordre);
   }
 
-  function remove(id) {
-    axios.delete(uri + "/predictions/" + id).then(() => {
-      window.location.href = "/reconnaissance";
-    });
-  }
-
   return !loading ? (
     <>
       <table>
         <thead>
           <tr>
-            <td>Image</td>
+            <td>Id</td>
             <td>Nom</td>
-            <td>Probabilité</td>
+            <td>Description</td>
             <td>Date</td>
+            <td>Détail</td>
             <td>
               <button onClick={sortArray}>Trier par date</button>
             </td>
           </tr>
         </thead>
         <tbody>
-          {actualImg?.map((elem, index) => {
+          {actualLieux?.map((elem, index) => {
             return (
               <tr key={index}>
+                <td>{elem.id}</td>
+                <td>{elem.name}</td>
+                <td>{parse(elem.description)}</td>
+                <td>{elem.host_since}</td>
                 <td>
-                  <img src={`data:image;base64, ${elem.image}`} />
-                </td>
-                <td>{elem.analyse?.type}</td>
-                <td>{elem.analyse?.taux}</td>
-                <td>{elem.date}</td>
-                <td>
-                  <button
-                    onClick={() => {
-                      remove(elem._id);
-                    }}
-                  >
-                    Supprimer
-                  </button>
+                  <Link to={`/lieu/${elem._id}`}>Voir plus</Link>
                 </td>
               </tr>
             );
@@ -104,7 +90,7 @@ function App() {
         </tbody>
       </table>
 
-      {img !== undefined && (
+      {lieux !== undefined && (
         <div className="row pagination-bottom">
           <div className="mx-auto">
             <Pagination
@@ -112,7 +98,7 @@ function App() {
               linkClass="page-link"
               activePage={page}
               itemsCountPerPage={10}
-              totalItemsCount={img.length}
+              totalItemsCount={lieux.length}
               pageRangeDisplayed={5}
               onChange={handleChangePage}
             />
@@ -121,10 +107,16 @@ function App() {
       )}
 
       <br />
-
       <button
         onClick={() => {
-          history.push("/reconnaissance/img");
+          history.push("/create/");
+        }}
+      >
+        Créer
+      </button>
+      <button
+        onClick={() => {
+          history.push("/reconnaissance/");
         }}
       >
         Reconnaissance d'image

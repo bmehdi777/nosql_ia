@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import parse from "html-react-parser";
+import {Link} from 'react-router-dom'
+
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import DragAnDropFile from "./DragAnDropFile/DragAnDropFile";
 
-import "./Reconnaissance.css";
+import "../styles/Reconnaissance.css";
 
 const uri = "http://localhost:8080";
 
@@ -85,17 +86,16 @@ function ModifyDetail() {
       </p>
       <DragAnDropFile onChange={handleFile} />
       <img id="img_predict" style={{ display: "none" }} />
-      <button
-        className="reconnaissance__btn"
-        onClick={() => {
-          history.push("/reconnaissance");
-        }}
-      >
-        Historique
-      </button>
       <button className="reconnaissance__btn" onClick={reconn}>
         Reconnaissance
       </button>
+
+      <Link
+      className='reconnaissance__historique'
+        to={"/historique"}
+      >
+        Historique
+      </Link>
     </div>
   );
 }
