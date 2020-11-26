@@ -61,7 +61,7 @@ function App() {
 
   function remove(id) {
     axios.delete(uri + "/predictions/" + id).then(() => {
-      history.push("/reconnaissance");
+      window.location.href = "/reconnaissance";
     });
   }
 
