@@ -56,7 +56,9 @@ function ModifyDetail() {
     };
     if (predictions[0].probability * 100 <= 30) {
       pred = await modelCoco.detect(document.getElementById("img_predict"));
-      predict.analyse = { taux: pred[0].score * 100, type: pred[0].class };
+      if (pred[0]?.score !== undefined) {
+        predict.analyse = { taux: pred[0].score * 100, type: pred[0].class };
+      }
     }
     console.log(predict);
 
