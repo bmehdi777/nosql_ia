@@ -10,39 +10,43 @@ import Reconaissance from "./Reconnaissance";
 import Historique from "./Historique";
 import WebcamDetection from "./WebcamDetection";
 
+import Layout from './Layout'
+
 function Routes() {
   return (
     <Router>
-      <Switch>
-        <Route exact sensitive path="/" component={App} />
-        <Route exact sensitive path="/airbnb" component={Airbnb} />
-        <Route exact sensitive path="/airbnb/:id" component={Detail} />
-        <Route
-          exact
-          sensitive
-          path="/modify-detail/:id"
-          component={ModifyDetail}
-        />
-        <Route exact sensitive path="/create" component={Create} />
-        <Route
-          exact
-          sensitive
-          path="/historique"
-          component={Historique}
-        />
-        <Route
-          exact
-          sensitive
-          path="/reconnaissance"
-          component={Reconaissance}
-        />
-        <Route
-          exact
-          sensitive
-          path="/webcamDetection"
-          component={WebcamDetection}
-        />
-      </Switch>
+      <Layout>
+        <Switch>
+          <Route exact sensitive path="/" component={App} />
+          <Route exact sensitive path="/airbnb" component={Airbnb} />
+          <Route exact sensitive path="/airbnb/:id" component={Detail} />
+          <Route
+            exact
+            sensitive
+            path="/modify-detail/:id"
+            component={ModifyDetail}
+          />
+          <Route exact sensitive path="/create" component={Create} />
+          <Route
+            exact
+            sensitive
+            path="/historique"
+            component={Historique}
+          />
+          <Route
+            exact
+            sensitive
+            path="/reconnaissance"
+            component={Reconaissance}
+          />
+          <Route
+            exact
+            sensitive
+            path="/webcamDetection"
+            component={WebcamDetection}
+          />
+        </Switch>
+      </Layout>
     </Router>
   );
 }
