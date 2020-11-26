@@ -1,43 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import parse from "html-react-parser";
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
+import DragAnDropFile from "./DragAnDropFile/DragAnDropFile";
+
+import "./Reconnaissance.css";
 
 const uri = "http://localhost:8080";
 
 function ModifyDetail() {
-  let model;
+  const [model, setModel] = useState();
+  const [prediction, setPrediction] = useState("");
+
   useEffect(() => {
     async function loadModel() {
-      model = await mobilenet.load();
+      setModel(await mobilenet.load());
     }
     loadModel();
   }, []);
 
-  async function handleFile(e) {
+  const handleFile = async (file) => {
     const img = document.getElementById("img_predict");
-    img.src = URL.createObjectURL(e.target.files[0]);
-    img.title = e.target.files[0].name;
-  }
+    img.src = URL.createObjectURL(file);
+    //img.title = file.name;
+  };
 
   async function reconn() {
-    const prediction = await model.classify(
+    const predictions = await model.classify(
       document.getElementById("img_predict")
     );
     let imgToB64 = convertB64(document.getElementById("img_predict"));
     const predict = {
       nom: document.getElementById("img_predict").title,
       analyse: {
-        taux: prediction[0].probability * 100,
-        type: prediction[0].className,
+        taux: predictions[0].probability * 100,
+        type: predictions[0].className,
       },
       image: imgToB64,
       date: getToday(),
       size: imgToB64.length * (3 / 4) - 2,
     };
-    console.log("predictions : ", predict);
+
+    axios
+      .post(uri + "/image", {
+        predict: predict,
+      })
+      .then(() => {
+        //resfresh historique
+      })
+      .catch((err) => console.log(err));
+
+    setPrediction(predict.nom);
   }
 
   function convertB64(img) {
@@ -60,14 +74,14 @@ function ModifyDetail() {
   }
 
   return (
-    <>
-      <input type="file" onChange={handleFile} />
-      <br />
-      <img id="img_predict" height="200" width="200" />
-      <br />
-      <img height="200" width="200" src="data:image;base64, " />
-      <button onClick={reconn}>Reconnaissance</button>
-    </>
+    <div className="reconnaissance">
+      <p className="reconnaissance__title">{prediction ? prediction : ""}</p>
+      <DragAnDropFile onChange={handleFile} />
+      <img id="img_predict" style={{ display: "none" }} />
+      <button className="reconnaissance__btn" onClick={reconn}>
+        Reconnaissance
+      </button>
+    </div>
   );
 }
 
