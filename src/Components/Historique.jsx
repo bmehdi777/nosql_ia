@@ -3,10 +3,12 @@ import axios from "axios";
 import parse from "html-react-parser";
 import Pagination from "react-js-pagination";
 import { Link, useParams, useHistory } from "react-router-dom";
+
+import '../styles/Historique.css'
 //a remplacer si on met sur heroku
 const uri = "http://localhost:8080";
 
-function App() {
+function Historique() {
   const history = useHistory();
   const [page, setPage] = useState(1);
   const [img, setImg] = useState([]);
@@ -67,44 +69,24 @@ function App() {
   }
 
   return !loading ? (
-    /*
-    <>
-      <table>
-        <thead>
-          <tr>
-            <td>Image</td>
-            <td>Nom</td>
-            <td>Probabilité</td>
-            <td>Date</td>
-            <td>
-              <button onClick={sortArray}>Trier par date</button>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {actualImg?.map((elem, index) => {
-            return (
-              <tr key={index}>
-                <td>
-                  <img src={`data:image;base64, ${elem.image}`} />
-                </td>
-                <td>{elem.analyse?.type}</td>
-                <td>{elem.analyse?.taux}</td>
-                <td>{elem.date}</td>
-                <td>
-                  <button
-                    onClick={() => {
-                      remove(elem._id);
-                    }}
-                  >
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <div className='historique'>
+      <div className="historique__predictions">
+        {actualImg?.map((elem, index) => (
+          <div className='historique__prediction'>
+            <img src={`data:image;base64, ${elem.image}`} />
+            <p>{elem.analyse?.type}</p>
+            <p>{elem.analyse?.taux.toFixed(2)} %</p>
+            <p>{elem.date}</p>
+            <button
+              onClick={() => {
+                remove(elem._id);
+              }}
+            >
+              Supprimer
+            </button>
+          </div>
+        ))}
+      </div>
 
       {img !== undefined && (
         <div className="row pagination-bottom">
@@ -121,39 +103,11 @@ function App() {
           </div>
         </div>
       )}
-
-      <br />
-
-      <button
-        onClick={() => {
-          history.push("/reconnaissance/img");
-        }}
-      >
-        Reconnaissance d'image
-      </button>
-    </>*/
-    <div className='App'>
-      <div className="predictions">
-        {actualImg?.map((elem, index) => (
-          <div className='app__prediction'>
-            <img src={`data:image;base64, ${elem.image}`} />
-            <p>{elem.analyse?.type}</p>
-            <p>{elem.analyse?.taux}</p>
-            <p>{elem.date}</p>
-            <button
-              onClick={() => {
-                remove(elem._id);
-              }}
-            >
-              Supprimer
-            </button>
-          </div>
-        ))}
-      </div>
     </div>
+
   ) : (
     <>Chargement...</>
   );
 }
 
-export default App;
+export default Historique;

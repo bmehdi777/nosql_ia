@@ -1,0 +1,20 @@
+.historique__predictions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.historique__prediction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    margin: 50px;
+    margin-top: 0px;
+}
+
+.historique__prediction img {
+    width: 80%;
+    border-radius: 50%;
+    object-fit: cover;
+}
