@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
@@ -60,7 +60,7 @@ function ModifyDetail() {
     }
     console.log(predict);
 
-    /*axios
+    axios
       .post(uri + "/image", {
         predict: predict,
       })
@@ -68,7 +68,6 @@ function ModifyDetail() {
         //resfresh historique
       })
       .catch((err) => console.log(err));
-*/
     setPrediction(predict.analyse.type);
     setTaux(predict.analyse.taux);
   }
@@ -103,10 +102,7 @@ function ModifyDetail() {
         Reconnaissance
       </button>
 
-      <Link
-      className='reconnaissance__historique'
-        to={"/historique"}
-      >
+      <Link className="reconnaissance__historique" to={"/historique"}>
         Historique
       </Link>
     </div>
