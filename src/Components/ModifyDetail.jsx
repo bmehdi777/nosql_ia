@@ -28,7 +28,9 @@ function ModifyDetail() {
   }, []);
 
   function supp() {
-    axios.delete(uri + "/" + id);
+    axios.delete(uri + "/" + id).then(() => {
+      history.push("/lieu/" + id);
+    });
   }
 
   function confirmForm() {

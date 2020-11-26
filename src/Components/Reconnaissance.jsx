@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import parse from "html-react-parser";
 import * as tf from "@tensorflow/tfjs";
@@ -10,8 +11,11 @@ import "./Reconnaissance.css";
 const uri = "http://localhost:8080";
 
 function ModifyDetail() {
+  const history = useHistory();
+
   const [model, setModel] = useState();
   const [prediction, setPrediction] = useState("");
+  const [taux, setTaux] = useState("");
 
   useEffect(() => {
     async function loadModel() {
@@ -52,6 +56,7 @@ function ModifyDetail() {
       .catch((err) => console.log(err));
 
     setPrediction(predict.analyse.type);
+    setTaux(predict.analyse.taux);
   }
 
   function convertB64(img) {
@@ -75,9 +80,19 @@ function ModifyDetail() {
 
   return (
     <div className="reconnaissance">
-      <p className="reconnaissance__title">{prediction ? prediction : ""}</p>
+      <p className="reconnaissance__title">
+        {prediction ? prediction + " / taux : " + taux : ""}
+      </p>
       <DragAnDropFile onChange={handleFile} />
       <img id="img_predict" style={{ display: "none" }} />
+      <button
+        className="reconnaissance__btn"
+        onClick={() => {
+          history.push("/reconnaissance");
+        }}
+      >
+        Historique
+      </button>
       <button className="reconnaissance__btn" onClick={reconn}>
         Reconnaissance
       </button>

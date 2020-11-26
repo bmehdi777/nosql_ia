@@ -16,6 +16,7 @@ function App() {
   useEffect(() => {
     axios.get(uri + "/predictions").then((response) => {
       setImg(response.data);
+      console.log(response.data);
       setLoading(false);
     });
   }, []);
@@ -37,11 +38,11 @@ function App() {
       let l;
       if (ordre) {
         l = img.sort(function (a, b) {
-          return new Date(a.host_since) - new Date(b.host_since);
+          return new Date(a.date) - new Date(b.date);
         });
       } else {
         l = img.sort(function (a, b) {
-          return new Date(b.host_since) - new Date(a.host_since);
+          return new Date(b.date) - new Date(a.date);
         });
       }
       console.log(l);
@@ -56,6 +57,12 @@ function App() {
 
   function sortArray() {
     setOrdre(!ordre);
+  }
+
+  function remove(id) {
+    axios.delete(uri + "/predictions/" + id).then(() => {
+      history.push("/reconnaissance");
+    });
   }
 
   return !loading ? (
@@ -79,9 +86,18 @@ function App() {
                 <td>
                   <img src={`data:image;base64, ${elem.image}`} />
                 </td>
-                <td>{elem.analyse.type}</td>
-                <td>{elem.analyse.taux}</td>
+                <td>{elem.analyse?.type}</td>
+                <td>{elem.analyse?.taux}</td>
                 <td>{elem.date}</td>
+                <td>
+                  <button
+                    onClick={() => {
+                      remove(elem._id);
+                    }}
+                  >
+                    Supprimer
+                  </button>
+                </td>
               </tr>
             );
           })}
@@ -108,7 +124,7 @@ function App() {
 
       <button
         onClick={() => {
-          history.push("/reconnaissance/");
+          history.push("/reconnaissance/img");
         }}
       >
         Reconnaissance d'image
