@@ -1,10 +1,7 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect} from 'react'
 import './DragAnDropFile.css'
 
 const DragAnDropFile = ({onChange}) => {
-
-    let dragBox = useRef(null)
-
 
     const updateThumbnail = (file) => {
         let thumbnailElem = document.querySelector('.drop-zone__thumb')
@@ -38,20 +35,20 @@ const DragAnDropFile = ({onChange}) => {
     }
 
     useEffect(() => {
-        dragBox.addEventListener('dragover', e => {
+        document.querySelector('.drop-zone').addEventListener('dragover', e => {
             e.preventDefault()
             document.querySelector('.drop-zone').classList.add('drop-zone--hover')
         })
 
-        dragBox.addEventListener('dragleave', e => {
+        document.querySelector('.drop-zone').addEventListener('dragleave', e => {
             document.querySelector('.drop-zone').classList.remove('drop-zone--hover')
         })
 
-        dragBox.addEventListener('dragend', e => {
+        document.querySelector('.drop-zone').addEventListener('dragend', e => {
             document.querySelector('.drop-zone').classList.remove('drop-zone--hover')
         })
 
-        dragBox.addEventListener('drop', e => {
+        document.querySelector('.drop-zone').addEventListener('drop', e => {
             e.preventDefault()
 
             if(e.dataTransfer.files.length) {
@@ -68,7 +65,6 @@ const DragAnDropFile = ({onChange}) => {
     return (
         <div 
             className='drop-zone'
-            ref={el => (dragBox = el)}
             onClick={() => document.querySelector('.drop-zone__input').click()}
         >
             <span className='drop-zone__prompt'>Drop une image ici ou clique pour upload</span> 

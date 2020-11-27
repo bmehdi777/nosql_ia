@@ -69,11 +69,15 @@ function Historique() {
       <div className="historique__predictions">
         {actualImg?.map((elem, index) => (
           <div className='historique__prediction'>
-            <img src={`data:image;base64, ${elem.image}`} />
+            <img 
+              src={`data:image;base64, ${elem.image}`}
+               className='historique__img'
+            />
             <p>{elem.analyse?.type}</p>
-            <p>{elem.analyse?.taux.toFixed(2)} %</p>
+            <p>{elem.analyse?.taux} %</p>
             <p>{elem.date}</p>
             <button
+              className='historique__suppr'
               onClick={() => {
                 remove(elem._id);
               }}
@@ -102,7 +106,7 @@ function Historique() {
     </div>
 
   ) : (
-    <>Chargement...</>
+    <div className='loading'>Chargement...</div>
   );
 }
 

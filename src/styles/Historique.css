@@ -1,3 +1,7 @@
+.historique {
+    margin-top: 100px;
+}
+
 .historique__predictions {
     display: flex;
     justify-content: center;
@@ -13,8 +17,28 @@
     margin-top: 0px;
 }
 
-.historique__prediction img {
+.historique__img {
     width: 80%;
-    border-radius: 50%;
+    border-radius: 15%;
     object-fit: cover;
+    border: 1px solid #000;
+}
+
+.historique__suppr {
+    border: 1px solid #000;
+    background: transparent;
+    padding: 2px 10px;
+    border-radius: 3px;
+    text-decoration: underline;
+    outline: none;
+}
+
+.historique__suppr:active {
+    border: 1px solid #000;
+    outline: none;
+}
+
+.historique__suppr:focus {
+    border: 1px solid #000;
+    outline: none;
 }

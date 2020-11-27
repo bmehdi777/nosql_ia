@@ -19,7 +19,7 @@ function ModifyDetail() {
   const [modelCoco, setModelCoco] = useState();
 
   const [prediction, setPrediction] = useState("");
-  const [taux, setTaux] = useState("");
+  const [taux, setTaux] = useState();
 
   useEffect(() => {
     async function loadModel() {
@@ -47,7 +47,7 @@ function ModifyDetail() {
     predict = {
       nom: document.getElementById("img_predict").title,
       analyse: {
-        taux: predictions[0].probability * 100,
+        taux: (predictions[0].probability * 100).toFixed(2),
         type: predictions[0].className,
       },
       image: imgToB64,
@@ -100,7 +100,7 @@ function ModifyDetail() {
   return (
     <div className="reconnaissance">
       <p className="reconnaissance__title">
-        {prediction ? prediction + " / taux : " + taux : ""}
+        {prediction ? prediction + " / taux : " + `${taux}%` : ""}
       </p>
       <DragAnDropFile onChange={handleFile} />
       <img

@@ -1,6 +1,8 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
+import '../styles/Layout.css'
+
 const Layout = ({children}) => {
     const history = useHistory()
 
@@ -8,8 +10,9 @@ const Layout = ({children}) => {
         history.goBack()
     }
     return (
-        <div>
+        <div className='Layout'>
             <button
+                className='Layout__btn'
                 onClick={goBack}
             >
                 Retour
